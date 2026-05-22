@@ -1,6 +1,10 @@
+using System.Text;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using TaskManager.Application.Interfaces;
 using TaskManager.Infrastructure;
+using TaskManager.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +14,14 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication(builder.Configuration);
+builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(
+                options =>
+                {
+                    options.Lockout.MaxFailedAccessAttempts = 3;
+                    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                }
+            )
+            .AddEntityFrameworkStores<ApplicationDbContext>();
 
 var app = builder.Build();
 

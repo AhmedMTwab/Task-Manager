@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TaskManager.Application.Mappings;
 using FluentValidation;
+using Microsoft.AspNetCore.Identity;
 
 namespace TaskManager.Application.Interfaces;
 
