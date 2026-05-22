@@ -22,6 +22,25 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(
                 }
             )
             .AddEntityFrameworkStores<ApplicationDbContext>();
+//JWT Authentication
+string securityKey = builder.Configuration.GetSection("SecurityKey").Value;
+byte[] keyBytes = ASCIIEncoding.ASCII.GetBytes(securityKey);
+var key = new SymmetricSecurityKey(keyBytes);
+builder.Services.AddAuthentication(
+    options =>
+    {
+        options.DefaultAuthenticateScheme = "default";
+        options.DefaultChallengeScheme = "default";
+    }
+    )
+.AddJwtBearer("default", options =>
+options.TokenValidationParameters = new TokenValidationParameters
+{
+    IssuerSigningKey = key,
+    ValidateIssuer = true,
+    ValidateAudience = true
+}
+);
 
 var app = builder.Build();
 
