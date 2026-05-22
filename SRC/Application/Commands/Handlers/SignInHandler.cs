@@ -45,7 +45,7 @@ public class SignInHandler(UserManager<ApplicationUser> userManager, IConfigurat
         var token = new JwtSecurityToken(
             claims: userClaims,
             signingCredentials: signingCredentials,
-            notBefore: DateTime.Now,
+            notBefore: DateTime.UtcNow,
             expires: expiration
         );
 
