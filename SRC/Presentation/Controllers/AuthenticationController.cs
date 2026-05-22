@@ -18,4 +18,10 @@ public class AuthenticationController(ISender mediator) : ControllerBase
         return Ok(ApiResponse.Success(201, "Registered successfully."));
     }
 
+    [HttpPost("SignIn")]
+    public async Task<IActionResult> SignIn(SignInDTO signInDTO)
+    {
+        var token = await mediator.Send(new SignInCommand(signInDTO));
+        return Ok(ApiResponse<TokenDTO>.Success(token));
+    }
 }
