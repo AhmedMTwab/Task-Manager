@@ -25,12 +25,14 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(
 
 var app = builder.Build();
 
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseExceptionHandler("/error");
+app.UseStatusCodePagesWithReExecute("/error/{0}");
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
