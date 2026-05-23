@@ -37,12 +37,14 @@ public class SignInHandler(UserManager<ApplicationUser> userManager, IConfigurat
         await userManager.ResetAccessFailedCountAsync(user);
 
         var userClaims = await userManager.GetClaimsAsync(user);
-        var securityKey = configuration.GetSection("SecurityKey").Value!;
+        var securityKey = configuration["Jwt:Key"]!;
         var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(securityKey));
         var signingCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
 
         var expiration = DateTime.Now.AddDays(1);
         var token = new JwtSecurityToken(
+            issuer: configuration["Jwt:Issuer"],
+            audience: configuration["Jwt:Audience"],
             claims: userClaims,
             signingCredentials: signingCredentials,
             notBefore: DateTime.UtcNow,

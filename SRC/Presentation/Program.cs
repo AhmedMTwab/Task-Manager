@@ -23,7 +23,8 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(
             )
             .AddEntityFrameworkStores<ApplicationDbContext>();
 //JWT Authentication
-string securityKey = builder.Configuration.GetSection("SecurityKey").Value;
+var jwtSection = builder.Configuration.GetSection("Jwt");
+string securityKey = jwtSection["Key"]!;
 byte[] keyBytes = ASCIIEncoding.ASCII.GetBytes(securityKey);
 var key = new SymmetricSecurityKey(keyBytes);
 builder.Services.AddAuthentication(
@@ -38,7 +39,9 @@ options.TokenValidationParameters = new TokenValidationParameters
 {
     IssuerSigningKey = key,
     ValidateIssuer = true,
-    ValidateAudience = true
+    ValidateAudience = true,
+    ValidIssuer = jwtSection["Issuer"],
+    ValidAudience = jwtSection["Audience"]
 }
 );
 
