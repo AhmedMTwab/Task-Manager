@@ -17,6 +17,11 @@ public class TaskRepository(ApplicationDbContext dbContext) : ITaskRepository
             .Where(t => t.ProjectId == projectId && !t.IsDeleted)
             .ToListAsync(cancellationToken);
     }
+    public async Task<ProjectTask?> GetByIdAsync(Guid id, Guid projectId, CancellationToken cancellationToken = default)
+    {
+        return await dbContext.tasks
+            .FirstOrDefaultAsync(t => t.Id == id && t.ProjectId == projectId && !t.IsDeleted, cancellationToken);
+    }
 
     public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
     {

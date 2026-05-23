@@ -29,4 +29,12 @@ public class TaskController(ISender mediator) : ControllerBase
         await mediator.Send(new CreateTaskCommand(projectId, createTaskDTO, ownerId));
         return Ok(ApiResponse.Success(201, "Task created successfully."));
     }
+
+    [HttpPut("{taskId:guid}/status")]
+    public async Task<IActionResult> UpdateStatus(Guid projectId, Guid taskId, UpdateTaskStatusDTO statusDTO)
+    {
+        var ownerId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        await mediator.Send(new UpdateTaskStatusCommand(taskId, projectId, ownerId, statusDTO));
+        return Ok(ApiResponse.Success(204, "Task status updated successfully."));
+    }
 }
