@@ -1,4 +1,4 @@
-using Mapster;
+using MapsterMapper;
 using MediatR;
 using TaskManager.Application.DTOs.Task;
 using TaskManager.Domain.Exceptions;
@@ -6,7 +6,7 @@ using TaskManager.Domain.Interfaces;
 
 namespace TaskManager.Application.Queries.Task;
 
-public class GetProjectTasksHandler(ITaskRepository taskRepository, IProjectRepository projectRepository)
+public class GetProjectTasksHandler(ITaskRepository taskRepository, IProjectRepository projectRepository, IMapper mapper)
     : IRequestHandler<GetProjectTasksQuery, IEnumerable<TaskDTO>>
 {
     public async Task<IEnumerable<TaskDTO>> Handle(GetProjectTasksQuery request, CancellationToken cancellationToken)
@@ -17,6 +17,6 @@ public class GetProjectTasksHandler(ITaskRepository taskRepository, IProjectRepo
 
         var tasks = await taskRepository.GetAllByProjectIdAsync(request.ProjectId, cancellationToken);
 
-        return tasks.Adapt<IEnumerable<TaskDTO>>();
+        return mapper.Map<IEnumerable<TaskDTO>>(tasks);
     }
 }

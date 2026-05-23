@@ -1,4 +1,4 @@
-using Mapster;
+using MapsterMapper;
 using MediatR;
 using TaskManager.Application.DTOs.Project;
 using TaskManager.Domain.Exceptions;
@@ -6,7 +6,7 @@ using TaskManager.Domain.Interfaces;
 
 namespace TaskManager.Application.Queries.Project;
 
-public class GetProjectByIdHandler(IProjectRepository projectRepository) 
+public class GetProjectByIdHandler(IProjectRepository projectRepository, IMapper mapper) 
     : IRequestHandler<GetProjectByIdQuery, ProjectDTO>
 {
     public async Task<ProjectDTO> Handle(GetProjectByIdQuery request, CancellationToken cancellationToken)
@@ -15,6 +15,6 @@ public class GetProjectByIdHandler(IProjectRepository projectRepository)
         if (project == null)
             throw new NotFoundException("Project", request.Id);
 
-        return project.Adapt<ProjectDTO>();
+        return mapper.Map<ProjectDTO>(project);
     }
 }

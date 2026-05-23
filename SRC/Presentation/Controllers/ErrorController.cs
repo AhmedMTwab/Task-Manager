@@ -36,6 +36,7 @@ public class ErrorController : ControllerBase
             UnauthorizedException ex => (401, ex.Message, (Dictionary<string, List<string>>?)null),
             ForbiddenException ex => (403, ex.Message, (Dictionary<string, List<string>>?)null),
             NotFoundException ex => (404, ex.Message, (Dictionary<string, List<string>>?)null),
+            ConflictException ex => (409, ex.Message, (Dictionary<string, List<string>>?)null),
 
             _ => (500, "An internal server error occurred.", (Dictionary<string, List<string>>?)null)
         };

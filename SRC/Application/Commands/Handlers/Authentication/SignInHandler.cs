@@ -41,7 +41,7 @@ public class SignInHandler(UserManager<ApplicationUser> userManager, IConfigurat
         var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(securityKey));
         var signingCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
 
-        var expiration = DateTime.Now.AddDays(1);
+        var expiration = DateTime.UtcNow.AddDays(1);
         var token = new JwtSecurityToken(
             issuer: configuration["Jwt:Issuer"],
             audience: configuration["Jwt:Audience"],

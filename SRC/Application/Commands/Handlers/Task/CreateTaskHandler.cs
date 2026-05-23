@@ -1,11 +1,11 @@
-using Mapster;
+using MapsterMapper;
 using MediatR;
 using TaskManager.Domain.Exceptions;
 using TaskManager.Domain.Interfaces;
 
 namespace TaskManager.Application.Commands.Task;
 
-public class CreateTaskHandler(ITaskRepository taskRepository, IProjectRepository projectRepository) 
+public class CreateTaskHandler(ITaskRepository taskRepository, IProjectRepository projectRepository, IMapper mapper) 
     : IRequestHandler<CreateTaskCommand, Unit>
 {
     public async Task<Unit> Handle(CreateTaskCommand request, CancellationToken cancellationToken)
@@ -16,7 +16,7 @@ public class CreateTaskHandler(ITaskRepository taskRepository, IProjectRepositor
             throw new NotFoundException("Project", request.ProjectId);
         }
 
-        var task = request.TaskData.Adapt<ProjectTask>();
+        var task = mapper.Map<ProjectTask>(request.TaskData);
         task.ProjectId = request.ProjectId;
         
         await taskRepository.AddAsync(task, cancellationToken);
