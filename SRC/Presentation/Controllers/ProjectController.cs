@@ -38,4 +38,11 @@ public class ProjectController(ISender mediator) : ControllerBase
         return Ok(ApiResponse<ProjectDTO>.Success(project));
     }
 
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> Update(Guid id, UpdateProjectDTO updateProjectDTO)
+    {
+        var ownerId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        await mediator.Send(new UpdateProjectCommand(id, updateProjectDTO, ownerId));
+        return Ok(ApiResponse.Success(204, "Project updated successfully."));
+    }
 }
