@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TaskManager.Application.Commands.Task;
+using TaskManager.Application.Queries.Task;
 using TaskManager.Application.DTOs;
 using TaskManager.Application.DTOs.Task;
 
@@ -13,6 +14,14 @@ namespace TaskManager.Presentation.Controllers;
 [Authorize]
 public class TaskController(ISender mediator) : ControllerBase
 {
+    [HttpGet]
+    public async Task<IActionResult> GetAll(Guid projectId)
+    {
+        var ownerId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        var tasks = await mediator.Send(new GetProjectTasksQuery(projectId, ownerId));
+        return Ok(ApiResponse<IEnumerable<TaskDTO>>.Success(tasks));
+    }
+
     [HttpPost]
     public async Task<IActionResult> Create(Guid projectId, CreateTaskDTO createTaskDTO)
     {
