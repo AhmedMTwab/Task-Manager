@@ -14,7 +14,7 @@ public class ProjectTask
     public DateTime? DueDate { get; set; }
     public Guid ProjectId { get; set; }
 
-    public Project Project { get; set; } = new Project();
+    public Project Project { get; set; }
 
 }
 public static class ProjectTaskExtensions
