@@ -1,23 +1,23 @@
 using FluentValidation;
-using TaskManager.Application.DTOs.Task;
+using TaskManager.Application.Commands.Task;
 
 namespace TaskManager.Application.Validators.Task;
 
-public class CreateTaskDTOValidator : AbstractValidator<CreateTaskDTO>
+public class CreateTaskCommandValidator : AbstractValidator<CreateTaskCommand>
 {
-    public CreateTaskDTOValidator()
+    public CreateTaskCommandValidator()
     {
-        RuleFor(t => t.Title)
+        RuleFor(t => t.TaskData.Title)
             .NotEmpty().WithMessage("Task title is required.")
             .MaximumLength(100).WithMessage("Task title must not exceed 100 characters.");
 
-        RuleFor(t => t.Description)
+        RuleFor(t => t.TaskData.Description)
             .MaximumLength(1000).WithMessage("Description must not exceed 1000 characters.");
             
-        RuleFor(t => t.Priority)
+        RuleFor(t => t.TaskData.Priority)
             .IsInEnum().WithMessage("Invalid priority level.");
             
-        RuleFor(t => t.Status)
+        RuleFor(t => t.TaskData.Status)
             .IsInEnum().WithMessage("Invalid status level.");
     }
 }
