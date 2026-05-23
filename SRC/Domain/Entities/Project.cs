@@ -11,7 +11,7 @@ public class Project
     public string? Description { get; set; }
     public Guid OwnerId { get; set; }
 
-    public ICollection<Task> Tasks { get; set; } = new List<Task>();
+    public ICollection<ProjectTask> Tasks { get; set; } = new List<ProjectTask>();
     public ApplicationUser Owner { get; set; } = new ApplicationUser();
 }
 public static class ProjectExtensions

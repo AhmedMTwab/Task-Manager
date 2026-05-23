@@ -248,10 +248,10 @@ namespace TaskManager.Infrastructure.Migrations
 
                     b.HasIndex("OwnerId");
 
-                    b.ToTable("projects");
+                    b.ToTable("projects", (string)null);
                 });
 
-            modelBuilder.Entity("Task", b =>
+            modelBuilder.Entity("ProjectTask", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -289,7 +289,7 @@ namespace TaskManager.Infrastructure.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("tasks");
+                    b.ToTable("tasks", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -354,7 +354,7 @@ namespace TaskManager.Infrastructure.Migrations
                     b.Navigation("Owner");
                 });
 
-            modelBuilder.Entity("Task", b =>
+            modelBuilder.Entity("ProjectTask", b =>
                 {
                     b.HasOne("Project", "Project")
                         .WithMany("Tasks")
