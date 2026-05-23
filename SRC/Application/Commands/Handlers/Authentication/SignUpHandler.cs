@@ -1,12 +1,12 @@
 using System.Security.Claims;
-using Mapster;
+using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using TaskManager.Domain.Exceptions;
 
 namespace TaskManager.Application.Commands.Authentication;
 
-public class SignUpHandler(UserManager<ApplicationUser> userManager) : IRequestHandler<SignUpCommand, Unit>
+public class SignUpHandler(UserManager<ApplicationUser> userManager, IMapper mapper) : IRequestHandler<SignUpCommand, Unit>
 {
     public async Task<Unit> Handle(SignUpCommand request, CancellationToken cancellationToken)
     {
@@ -16,7 +16,7 @@ public class SignUpHandler(UserManager<ApplicationUser> userManager) : IRequestH
         if (existingUser != null)
             throw new ConflictException("Username already exists.");
 
-        var user = dto.Adapt<ApplicationUser>();
+        var user = mapper.Map<ApplicationUser>(dto);
 
         var result = await userManager.CreateAsync(user, dto.Password);
         if (!result.Succeeded)
