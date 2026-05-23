@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-public class Task
+public class ProjectTask
 {
     public Guid Id { get; set; } = Guid.NewGuid();
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
@@ -17,13 +17,17 @@ public class Task
     public Project Project { get; set; } = new Project();
 
 }
-public static class TaskExtensions
+public static class ProjectTaskExtensions
 {
-    public static void ConfigureTask(this ModelBuilder modelBuilder)
+    public static void ConfigureProjectTask(this ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Task>()
-            .HasOne(t => t.Project)
-            .WithMany(p => p.Tasks)
-            .HasForeignKey(t => t.ProjectId);
+        modelBuilder.Entity<ProjectTask>(entity =>
+        {
+            entity.ToTable("tasks");
+
+            entity.HasOne(t => t.Project)
+                .WithMany(p => p.Tasks)
+                .HasForeignKey(t => t.ProjectId);
+        });
     }
 }

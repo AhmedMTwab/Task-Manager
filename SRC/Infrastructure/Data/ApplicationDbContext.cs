@@ -11,13 +11,13 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
     }
 
     public DbSet<Project> projects { get; set; }
-    public DbSet<Task> tasks { get; set; }
+    public DbSet<ProjectTask> tasks { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.ConfigureProject();
-        modelBuilder.ConfigureTask();
+        modelBuilder.ConfigureProjectTask();
     }
 }
