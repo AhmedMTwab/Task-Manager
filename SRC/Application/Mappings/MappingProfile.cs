@@ -1,5 +1,6 @@
 using Mapster;
 using TaskManager.Application.DTOs.Authentication;
+using TaskManager.Application.DTOs.Project;
 
 namespace TaskManager.Application.Mappings;
 
@@ -11,5 +12,9 @@ public class MappingProfile : IRegister
             .Map(dest => dest.UserName, src => src.Username)
             .Map(dest => dest.Email, src => src.Email)
             .Map(dest => dest.PhoneNumber, src => src.PhoneNumber);
+
+        config.NewConfig<CreateProjectDTO, global::Project>()
+            .Map(dest => dest.Name, src => src.Name)
+            .Map(dest => dest.Description, src => src.Description);
     }
 }
