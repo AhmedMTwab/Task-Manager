@@ -12,7 +12,7 @@ public class Project
     public Guid OwnerId { get; set; }
 
     public ICollection<ProjectTask> Tasks { get; set; } = new List<ProjectTask>();
-    public ApplicationUser Owner { get; set; } = new ApplicationUser();
+    public ApplicationUser Owner { get; set; }
 }
 public static class ProjectExtensions
 {

@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using TaskManager.Domain.Interfaces;
 using TaskManager.Infrastructure.Data;
 
@@ -8,6 +9,13 @@ public class ProjectRepository(ApplicationDbContext dbContext) : IProjectReposit
     public async Task AddAsync(Project project, CancellationToken cancellationToken = default)
     {
         await dbContext.projects.AddAsync(project, cancellationToken);
+    }
+
+    public async Task<IEnumerable<Project>> GetAllByOwnerIdAsync(Guid ownerId, CancellationToken cancellationToken = default)
+    {
+        return await dbContext.projects
+            .Where(p => p.OwnerId == ownerId && !p.IsDeleted)
+            .ToListAsync(cancellationToken);
     }
 
     public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
