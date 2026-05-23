@@ -29,4 +29,13 @@ public class ProjectController(ISender mediator) : ControllerBase
         var projects = await mediator.Send(new GetProjectsQuery(ownerId));
         return Ok(ApiResponse<IEnumerable<ProjectDTO>>.Success(projects));
     }
+
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> GetById(Guid id)
+    {
+        var ownerId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        var project = await mediator.Send(new GetProjectByIdQuery(id, ownerId));
+        return Ok(ApiResponse<ProjectDTO>.Success(project));
+    }
+
 }

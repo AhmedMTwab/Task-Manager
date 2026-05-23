@@ -18,6 +18,19 @@ public class ProjectRepository(ApplicationDbContext dbContext) : IProjectReposit
             .ToListAsync(cancellationToken);
     }
 
+    public async Task<Project?> GetByIdAsync(Guid id, Guid ownerId, CancellationToken cancellationToken = default)
+    {
+        return await dbContext.projects
+            .FirstOrDefaultAsync(p => p.Id == id && p.OwnerId == ownerId && !p.IsDeleted, cancellationToken);
+    }
+
+    public async Task<Project?> GetByIdWithTasksAsync(Guid id, Guid ownerId, CancellationToken cancellationToken = default)
+    {
+        return await dbContext.projects
+            .Include(p => p.Tasks)
+            .FirstOrDefaultAsync(p => p.Id == id && p.OwnerId == ownerId && !p.IsDeleted, cancellationToken);
+    }
+
     public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         await dbContext.SaveChangesAsync(cancellationToken);
