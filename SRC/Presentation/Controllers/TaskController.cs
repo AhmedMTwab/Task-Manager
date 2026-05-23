@@ -37,4 +37,12 @@ public class TaskController(ISender mediator) : ControllerBase
         await mediator.Send(new UpdateTaskStatusCommand(taskId, projectId, ownerId, statusDTO));
         return Ok(ApiResponse.Success(204, "Task status updated successfully."));
     }
+
+    [HttpDelete("{taskId:guid}")]
+    public async Task<IActionResult> Delete(Guid projectId, Guid taskId)
+    {
+        var ownerId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        await mediator.Send(new DeleteTaskCommand(taskId, projectId, ownerId));
+        return Ok(ApiResponse.Success(204, "Task deleted successfully."));
+    }
 }
