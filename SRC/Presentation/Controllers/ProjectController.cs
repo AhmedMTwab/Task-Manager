@@ -45,4 +45,12 @@ public class ProjectController(ISender mediator) : ControllerBase
         await mediator.Send(new UpdateProjectCommand(id, updateProjectDTO, ownerId));
         return Ok(ApiResponse.Success(204, "Project updated successfully."));
     }
+
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        var ownerId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        await mediator.Send(new DeleteProjectCommand(id, ownerId));
+        return Ok(ApiResponse.Success(204, "Project deleted successfully."));
+    }
 }
